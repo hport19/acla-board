@@ -1,0 +1,127 @@
+/*
+ * The Local Arts edition (/local): corporate, sober, classic.
+ * Deep navy and ivory stone, one brass accent, a restrained set of room
+ * colors, an editorial serif (Newsreader) with Inter for the interface.
+ * Only tokens and a few ornaments change; every room keeps its own interface.
+ */
+@import '@fontsource-variable/newsreader/opsz.css';
+@import '@fontsource-variable/newsreader/opsz-italic.css';
+@import '@fontsource-variable/inter/index.css';
+
+:root[data-edition='local'] {
+  --plaster: #f2f0eb;
+  --plaster-2: #e9e6df;
+  --plaster-3: #dcd8cf;
+  --paper: #faf9f6;
+  --ink: #141d2b;
+  --ink-2: #3b4555;
+  --ink-3: #697283;
+  --ink-4: #9aa0aa;
+  --line: rgba(20, 29, 43, 0.1);
+  --line-2: rgba(20, 29, 43, 0.19);
+
+  --night: #0d1828;
+  --night-2: #142238;
+  --night-3: #203250;
+  --cream: #ebe6db;
+  --cream-2: rgba(235, 230, 219, 0.64);
+  --cream-3: rgba(235, 230, 219, 0.36);
+
+  /* the room colors keep their names; in this edition they are quiet */
+  --cempasuchil: #9c7b43;  /* brass: home, the accent */
+  --marigold: #b39554;
+  --terracotta: #8b3a2b;   /* oxblood */
+  --teal: #2d5853;
+  --indigo: #1e3256;       /* navy */
+  --rosa: #6a2c40;         /* claret */
+  --cobalt: #3b5679;
+  --agave: #4b5f4d;
+  --gold: #94763e;
+  --walnut: #4a4640;       /* graphite */
+
+  --aye: #2d5853;
+  --nay: #8b3a2b;
+  --abstain: #9aa0aa;
+
+  --serif: 'Newsreader Variable', 'Iowan Old Style', Georgia, serif;
+  --sans: 'Inter Variable', 'Helvetica Neue', system-ui, sans-serif;
+}
+
+[data-edition='local'] body { background: #08111d; font-size: 14.5px; letter-spacing: -0.003em; }
+[data-edition='local'] .display { font-weight: 380; letter-spacing: -0.015em; line-height: 1.04; font-variation-settings: normal; }
+[data-edition='local'] .display em, [data-edition='local'] h1 em, [data-edition='local'] h2 em { font-variation-settings: normal; }
+[data-edition='local'] ::selection { background: rgba(156, 123, 67, 0.28); }
+
+/* The window: deep navy with one cool light, no warm glow. */
+[data-edition='local'] .window {
+  background:
+    radial-gradient(1100px 700px at 100% 0%, rgba(59, 86, 121, 0.32), transparent 60%),
+    radial-gradient(900px 600px at 0% 100%, rgba(156, 123, 67, 0.08), transparent 60%),
+    var(--night);
+}
+
+/* Sidebar: no papel picado; a single brass rule and a spaced wordmark. */
+[data-edition='local'] .side-picado {
+  animation: none;
+  top: 22px; left: 28px; right: 18px; height: 1px;
+  background: linear-gradient(90deg, rgba(179, 149, 84, 0.7), rgba(179, 149, 84, 0.12));
+  -webkit-mask: none; mask: none; opacity: 1;
+}
+[data-edition='local'] .side-brand .mark { filter: none; }
+[data-edition='local'] .side-brand:hover .mark { transform: none; }
+[data-edition='local'] .side-brand-name { font-size: 21px; letter-spacing: 0.22em; font-weight: 500; font-variation-settings: normal; }
+[data-edition='local'] .side-brand-sub { letter-spacing: 0.01em; }
+[data-edition='local'] .topbar-brand .serif { letter-spacing: 0.2em; }
+
+/* Buttons: squarer, quieter. */
+[data-edition='local'] .btn { border-radius: 10px; }
+[data-edition='local'] .btn-primary:hover:not(:disabled) { background: #1d2a3e; }
+[data-edition='local'] .btn-accent { color: #fbfaf7; }
+[data-edition='local'] .btn-danger { color: #fbfaf7; }
+[data-edition='local'] .rooms-glyph { border-radius: 12px; color: #fbfaf7; }
+
+/* Home */
+[data-edition='local'] .home-hello em { font-variation-settings: normal; }
+[data-edition='local'] .chg-item:hover { background: linear-gradient(90deg, rgba(156, 123, 67, 0.06), transparent 70%); }
+[data-edition='local'] .chg-sys { background: rgba(156, 123, 67, 0.13); }
+[data-edition='local'] .att-glyph { color: #fbfaf7; }
+
+/* Votes */
+[data-edition='local'] .paper-text::first-letter { font-variation-settings: normal; }
+[data-edition='local'] .stamp.carried { color: #2d5853; }
+[data-edition='local'] .stamp.failed { color: #8b3a2b; }
+[data-edition='local'] .bb.on { color: #fbfaf7; }
+
+/* Live meeting: midnight slate, a calm red dot. */
+[data-edition='local'] .live {
+  --aye-l: #8fc1b7; --nay-l: #d99a8a;
+  background:
+    radial-gradient(800px 500px at 0% 0%, rgba(59, 86, 121, 0.35), transparent 70%),
+    radial-gradient(700px 500px at 100% 100%, rgba(156, 123, 67, 0.1), transparent 70%),
+    #0f1a29 !important;
+}
+[data-edition='local'] .live .btn-primary:hover:not(:disabled) { background: #f4f2ee; }
+[data-edition='local'] .live-dot { background: #c9553f; }
+[data-edition='local'] .lv-p.nay { background: rgba(217, 154, 138, 0.2); }
+
+/* Money */
+[data-edition='local'] .lrow.warm .lrow-fill { background: linear-gradient(90deg, #c9b27e, var(--gold)); }
+[data-edition='local'] .lrow.over .lrow-fill { background: linear-gradient(90deg, #b56f60, var(--terracotta)); }
+[data-edition='local'] .lrow.good .lrow-fill { background: linear-gradient(90deg, #6f9a93, var(--teal)); }
+[data-edition='local'] .amount-quick button.on { color: #fbfaf7; }
+
+/* Artists: a gallery wall in charcoal, not walnut. */
+[data-edition='local'] .ar-f.on, [data-edition='local'] .ar-f.pending.on, [data-edition='local'] .frame-tag { color: #fbfaf7; }
+[data-edition='local'] .label-art { background: #1b1f26; box-shadow: 0 16px 30px -14px rgba(10, 16, 26, 0.55); }
+
+/* Documents: cooler paper spines. */
+[data-edition='local'] .spine.light { background: linear-gradient(90deg, #cfcbc2 0, #e9e6df 20%, #f5f3ee 50%, #e6e2da 80%, #c6c1b6 100%); }
+[data-edition='local'] .spine:not(.light) { color: #f2f0eb; }
+
+/* Events */
+[data-edition='local'] .ev-art { box-shadow: 0 0 0 3px #f7f6f2, 0 6px 14px -6px rgba(20, 29, 43, 0.4); }
+[data-edition='local'] .sl-date { border-radius: 4px; }
+
+/* Votes: the resolution on plain letterhead, a navy rule with a brass hairline. */
+[data-edition='local'] .paper { background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 30%), #fcfbf8; }
+[data-edition='local'] .paper::before { height: 5px; background: linear-gradient(var(--indigo), var(--indigo)) top / 100% 3px no-repeat, linear-gradient(var(--marigold), var(--marigold)) 0 4px / 100% 1px no-repeat; opacity: 1; }

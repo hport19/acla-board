@@ -17,6 +17,17 @@ To try the phone layout, open the browser's device toolbar at a width of 820 px 
 
 **Demo data** in the More sheet (phone) or the sidebar foot (desktop) resets everything to the seed.
 
+## Two editions
+
+One build serves two looks, chosen by the address:
+
+| Address | Edition |
+|---|---|
+| `/` | **Amarillo Council for the Latino Arts**: warm atelier, papel picado, Fraunces |
+| `/local/` | **Amarillo Council for the Local Arts** (the assumed name): navy, ivory and brass, Newsreader and Inter |
+
+Only look, wording and demo data change; every room, rule and action is shared. See `src/edition.ts` (the switch), `src/styles/local.css` (the theme) and `src/store/seed-local.ts` (the demo data retold). Each edition keeps its own saved data in the browser.
+
 ## The rooms
 
 | Room | What it is |
@@ -44,7 +55,7 @@ To try the phone layout, open the browser's device toolbar at a width of 820 px 
 - `src/lib.ts`: the router (`navigate`, `useRoute`), date and money formatting, phone helpers
 - `tools/*.cjs`: Playwright scripts for screenshots and click-through checks. They need `playwright`; set `PLAYWRIGHT_PATH` if it is installed somewhere else.
 
-Stack: Vite 7, React 19, TypeScript (strict) and framer-motion. Fonts are Fraunces and Instrument Sans, self-hosted through Fontsource.
+Stack: Vite 7, React 19, TypeScript (strict) and framer-motion. Fonts are self-hosted through Fontsource: Fraunces and Instrument Sans, or Newsreader and Inter in the Local Arts edition.
 
 ## Planned next
 

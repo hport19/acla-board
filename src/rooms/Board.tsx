@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { isLocal } from '../edition'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useStore, update, uid, ME } from '../store/store'
 import { attendanceRate, heldMeetings, quorumOf } from '../store/derive'
@@ -44,8 +45,8 @@ export default function Board() {
             <svg className="table-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
               <defs>
                 <radialGradient id="tableWood" cx="50%" cy="40%" r="70%">
-                  <stop offset="0" stopColor="#fbf4e8" />
-                  <stop offset="1" stopColor="#e9dac1" />
+                  <stop offset="0" stopColor={isLocal ? '#f8f7f4' : '#fbf4e8'} />
+                  <stop offset="1" stopColor={isLocal ? '#dfdbd2' : '#e9dac1'} />
                 </radialGradient>
               </defs>
               <ellipse cx="50" cy="51.5" rx="30" ry="24" fill="rgba(34,28,44,.06)" />

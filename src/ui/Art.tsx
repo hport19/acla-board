@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import type { ArtStyle } from '../store/types'
 import { rng } from '../lib'
+import { isLocal } from '../edition'
 
 /*
  * Generative stand-ins for artworks. Each artist gets a piece drawn from a
@@ -9,7 +10,10 @@ import { rng } from '../lib'
  * gallery wall feels hung with work, not filled with placeholders.
  */
 
-const PAL = {
+const PAL = isLocal ? {
+  terracotta: '#8b4a3a', marigold: '#b39554', rosa: '#7a4a5a', teal: '#2d5853', indigo: '#1e2e4d', cobalt: '#3b5679',
+  agave: '#56685a', cream: '#ece8e0', bone: '#e6e2d9', ink: '#141d2b', sand: '#c9bfae', clay: '#8a6a55', sky: '#9fb3c4',
+} : {
   terracotta: '#b9472a', marigold: '#e39b1b', rosa: '#c8366e', teal: '#1d5e5c', indigo: '#2b2d6b', cobalt: '#2f57a6',
   agave: '#5e7f3f', cream: '#f4e8d4', bone: '#efe3cc', ink: '#221c2c', sand: '#d9c19a', clay: '#a5583a', sky: '#9ec3c7',
 }
@@ -224,7 +228,79 @@ function Milagro({ r }: { r: () => number }) {
   )
 }
 
-const painters: Record<ArtStyle, (p: { r: () => number }) => React.ReactNode> = { milagro: Milagro, papel: Papel, serape: Serape, sol: Sol, milpa: Milpa, mesa: Mesa, barro: Barro, son: Son, mural: Mural, tinta: Tinta }
+/* ---- the Local edition's contemporary pieces, in place of the folk traditions ---- */
+
+/** Color field: two or three soft rectangles floating on a ground. */
+function Field({ r }: { r: () => number }) {
+  const grounds = [PAL.indigo, PAL.clay, PAL.agave, PAL.ink]
+  const fields = [PAL.terracotta, PAL.marigold, PAL.cobalt, PAL.sand, PAL.rosa, PAL.teal]
+  const n = r() > 0.5 ? 3 : 2
+  const g = grounds[Math.floor(r() * grounds.length)]
+  const gap = 18, top = 30, h = (400 - top * 2 - gap * (n - 1)) / n
+  return (
+    <g>
+      <rect width="300" height="400" fill={g} />
+      {Array.from({ length: n }).map((_, i) => <rect key={i} x={26} y={top + i * (h + gap)} width={248} height={h} rx={6} fill={fields[Math.floor(r() * fields.length)]} opacity={0.82 + r() * 0.15} />)}
+    </g>
+  )
+}
+
+/** Fine ruled bands on a pale ground. */
+function Bands({ r }: { r: () => number }) {
+  const ground = r() > 0.5 ? PAL.bone : PAL.cream
+  const ink = r() > 0.5 ? PAL.indigo : PAL.clay
+  const step = 9 + Math.floor(r() * 6)
+  return (
+    <g>
+      <rect width="300" height="400" fill={ground} />
+      {Array.from({ length: Math.floor(340 / step) }).map((_, i) => <line key={i} x1="30" x2="270" y1={30 + i * step} y2={30 + i * step} stroke={ink} strokeOpacity={0.18 + (i % 4 === 0 ? 0.25 : 0)} strokeWidth={i % 4 === 0 ? 1.4 : 0.8} />)}
+      <rect x="30" y={60 + r() * 200} width="240" height={step * 3} fill={PAL.marigold} opacity=".35" />
+    </g>
+  )
+}
+
+/** A single orb over a horizon: geometric and quiet. */
+function Orb({ r }: { r: () => number }) {
+  const bg = r() > 0.5 ? PAL.indigo : PAL.ink
+  const y = 140 + r() * 60
+  return (
+    <g>
+      <rect width="300" height="400" fill={bg} />
+      <rect y={y + 70} width="300" height={400 - y - 70} fill={PAL.cobalt} opacity=".55" />
+      <circle cx={110 + r() * 80} cy={y} r={58 + r() * 16} fill={PAL.marigold} />
+      <line x1="0" x2="300" y1={y + 70} y2={y + 70} stroke={PAL.cream} strokeOpacity=".5" />
+    </g>
+  )
+}
+
+/** A modernist grid of planes. */
+function Grid({ r }: { r: () => number }) {
+  const cols = [PAL.bone, PAL.bone, PAL.cream, PAL.indigo, PAL.terracotta, PAL.marigold, PAL.sand]
+  const xs = [0, 70 + r() * 60, 170 + r() * 60, 300]
+  const ys = [0, 90 + r() * 70, 220 + r() * 80, 400]
+  const cells: React.ReactNode[] = []
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) cells.push(<rect key={`${i}${j}`} x={xs[i]} y={ys[j]} width={xs[i + 1] - xs[i]} height={ys[j + 1] - ys[j]} fill={cols[Math.floor(r() * cols.length)]} stroke={PAL.ink} strokeWidth="5" />)
+  return <g>{cells}</g>
+}
+
+/** An abstract bronze form on a plinth. */
+function Form({ r }: { r: () => number }) {
+  const bg = r() > 0.5 ? '#2a2f38' : PAL.indigo
+  const tilt = -18 + r() * 36
+  return (
+    <g>
+      <rect width="300" height="400" fill={bg} />
+      <defs><radialGradient id={`fm${Math.round(tilt)}`} cx="35%" cy="30%" r="75%"><stop offset="0" stopColor="#d9bf86" /><stop offset=".55" stopColor="#9c7b43" /><stop offset="1" stopColor="#3f2f17" /></radialGradient></defs>
+      <ellipse cx="150" cy="180" rx="62" ry="96" transform={`rotate(${tilt} 150 180)`} fill={`url(#fm${Math.round(tilt)})`} />
+      <ellipse cx="150" cy="180" rx="22" ry="44" transform={`rotate(${tilt} 150 180)`} fill={bg} opacity=".85" />
+      <rect x="95" y="290" width="110" height="110" fill={PAL.bone} opacity=".9" />
+    </g>
+  )
+}
+
+const painters: Record<ArtStyle, (p: { r: () => number }) => React.ReactNode> = isLocal
+  ? { milagro: Form, papel: Field, serape: Bands, sol: Orb, milpa: Grid, mesa: Mesa, barro: Barro, son: Son, mural: Grid, tinta: Tinta }
+  : { milagro: Milagro, papel: Papel, serape: Serape, sol: Sol, milpa: Milpa, mesa: Mesa, barro: Barro, son: Son, mural: Mural, tinta: Tinta }
 
 export const Art = memo(function Art({ style, seed, className, title }: { style: ArtStyle; seed: number; className?: string; title?: string }) {
   const r = rng(seed * 97 + 13)

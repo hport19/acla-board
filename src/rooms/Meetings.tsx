@@ -58,7 +58,7 @@ export default function Meetings() {
 function RailItem({ m, on }: { m: Meeting; on: boolean }) {
   const d = new Date(m.date)
   return (
-    <button className={`mt-ri ${on ? 'on' : ''} ${m.status}`} onClick={() => navigate(`/meetings/${m.id}`, { replace: true })}>
+    <button className={`mt-ri ${on ? 'on' : ''} st-${m.status}`} onClick={() => navigate(`/meetings/${m.id}`, { replace: true })}>
       {on && <motion.span layoutId="mt-ri-on" className="mt-ri-on" transition={{ type: 'spring', stiffness: 400, damping: 36 }} />}
       <span className="mt-ri-day display">{d.getDate()}</span>
       <span className="mt-ri-text">

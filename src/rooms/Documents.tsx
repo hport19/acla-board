@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { isLocal } from '../edition'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useStore, update, uid, ME } from '../store/store'
 import { nextMeeting, dir } from '../store/derive'
@@ -9,10 +10,10 @@ import type { BoardDoc } from '../store/types'
 import './documents.css'
 
 const SHELVES: { key: BoardDoc['shelf']; label: string; color: string }[] = [
-  { key: 'Governing', label: 'Governing', color: '#2b2d6b' },
-  { key: 'Policies', label: 'Policies', color: '#1d5e5c' },
-  { key: 'Minutes', label: 'Minutes', color: '#6b4e3d' },
-  { key: 'Filings', label: 'Filings', color: '#8a3d24' },
+  { key: 'Governing', label: 'Governing', color: isLocal ? '#1e3256' : '#2b2d6b' },
+  { key: 'Policies', label: 'Policies', color: isLocal ? '#2d5853' : '#1d5e5c' },
+  { key: 'Minutes', label: 'Minutes', color: isLocal ? '#4a4640' : '#6b4e3d' },
+  { key: 'Filings', label: 'Filings', color: isLocal ? '#6a2c40' : '#8a3d24' },
 ]
 
 export default function Documents() {
@@ -103,6 +104,7 @@ function Spine({ d, i, on, dim }: { d: BoardDoc; i: number; on: boolean; dim: bo
 
 /* Small objects that live on the shelves. */
 function Vase() {
+  if (isLocal) return <Bronze />
   return (
     <svg className="shelf-obj" width="70" height="96" viewBox="0 0 70 96" aria-hidden>
       {[[-14, 20], [0, 10], [14, 22], [-6, 30], [8, 34]].map(([x, y], i) => (
@@ -118,10 +120,26 @@ function Vase() {
     </svg>
   )
 }
+/* The Local edition's shelf object: a small bronze sphere on a stone plinth. */
+function Bronze() {
+  return (
+    <svg className="shelf-obj" width="60" height="96" viewBox="0 0 60 96" aria-hidden>
+      <defs>
+        <radialGradient id="bronzeBall" cx="38%" cy="32%" r="70%"><stop offset="0" stopColor="#d9bf86" /><stop offset=".5" stopColor="#9c7b43" /><stop offset="1" stopColor="#4d3a1c" /></radialGradient>
+        <linearGradient id="plinth" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#cfcbc2" /><stop offset=".5" stopColor="#efece6" /><stop offset="1" stopColor="#bdb8ad" /></linearGradient>
+      </defs>
+      <circle cx="30" cy="36" r="17" fill="url(#bronzeBall)" />
+      <rect x="27" y="52" width="6" height="6" fill="#4d3a1c" />
+      <rect x="12" y="58" width="36" height="38" fill="url(#plinth)" stroke="rgba(20,29,43,.18)" strokeWidth=".8" />
+      <rect x="10" y="56" width="40" height="4" fill="#e4e1da" stroke="rgba(20,29,43,.18)" strokeWidth=".8" />
+    </svg>
+  )
+}
+
 function Stack() {
   return (
     <svg className="shelf-obj" width="92" height="40" viewBox="0 0 92 40" aria-hidden>
-      {[0, 1, 2, 3].map((i) => <rect key={i} x={4 + (i % 2) * 3} y={30 - i * 9} width={82 - (i % 2) * 6} height="8" rx="1.5" fill={['#e9dcc4', '#d8c3a0', '#f3ead8', '#c9a77e'][i]} stroke="rgba(60,40,20,.25)" />)}
+      {[0, 1, 2, 3].map((i) => <rect key={i} x={4 + (i % 2) * 3} y={30 - i * 9} width={82 - (i % 2) * 6} height="8" rx="1.5" fill={(isLocal ? ['#e4e1da', '#cfcac0', '#efece6', '#b9b3a7'] : ['#e9dcc4', '#d8c3a0', '#f3ead8', '#c9a77e'])[i]} stroke="rgba(60,40,20,.25)" />)}
     </svg>
   )
 }

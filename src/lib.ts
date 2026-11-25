@@ -1,5 +1,6 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import type { RoomKey } from './store/types'
+import { toUrl, fromUrl } from './edition'
 
 /* ---------- routing ---------- */
 
@@ -7,10 +8,11 @@ const routeListeners = new Set<() => void>()
 window.addEventListener('popstate', () => routeListeners.forEach((l) => l()))
 
 export function navigate(path: string, opts: { replace?: boolean } = {}) {
-  if (path === location.pathname + location.search) return
+  const url = toUrl(path)
+  if (url === location.pathname + location.search) return
   // Remember where a pushed page came from, so closing it can step back instead of piling up history.
-  if (opts.replace) history.replaceState(history.state, '', path)
-  else history.pushState({ from: location.pathname }, '', path)
+  if (opts.replace) history.replaceState(history.state, '', url)
+  else history.pushState({ from: fromUrl(location.pathname) }, '', url)
   routeListeners.forEach((l) => l())
 }
 
@@ -20,7 +22,7 @@ export const usePhone = () => useMedia(PHONE)
 
 /** Open an item in a room. On a phone it opens as a sheet over the room, so it is a step back can undo. */
 export function openDetail(path: string) {
-  const hasId = location.pathname.split('/').filter(Boolean).length > 1
+  const hasId = fromUrl(location.pathname).split('/').filter(Boolean).length > 1
   navigate(path, { replace: hasId && !isPhone() })
 }
 
@@ -36,7 +38,7 @@ export const buzz = (ms = 8) => { try { navigator.vibrate?.(ms) } catch { /* not
 export function useRoute() {
   const path = useSyncExternalStore(
     (fn) => { routeListeners.add(fn); return () => routeListeners.delete(fn) },
-    () => location.pathname,
+    () => fromUrl(location.pathname),
   )
   const parts = path.split('/').filter(Boolean)
   const rooms: RoomKey[] = ['home', 'board', 'meetings', 'votes', 'events', 'artists', 'programs', 'money', 'documents']
