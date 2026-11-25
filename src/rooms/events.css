@@ -1,0 +1,84 @@
+.garland-wrap { flex: none; margin: -6px -10px 4px; }
+.garland { width: 100%; height: auto; max-height: 200px; display: block; overflow: visible; }
+.g-month { font: 500 11.5px var(--sans); fill: var(--ink-3); }
+.g-today { font: italic 500 13px var(--serif); fill: var(--terracotta); }
+.g-label { font: 500 12px var(--sans); fill: var(--ink-2); }
+.g-label.on { font-weight: 700; fill: var(--ink); }
+.flag { transition: filter 0.2s; }
+.flag:hover { filter: brightness(1.08) drop-shadow(0 4px 6px rgba(34, 28, 44, 0.2)); }
+.flag:focus-visible { outline: none; filter: drop-shadow(0 0 4px var(--terracotta)); }
+
+.ev { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 0.8fr); gap: 44px; padding-top: 14px; border-top: 1px solid var(--line); }
+.ev > section { min-height: 0; overflow-y: auto; }
+
+.ev-kind { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--k); }
+.ev-name { font-size: clamp(30px, 2.8vw, 44px); margin: 2px 0 10px; text-wrap: balance; }
+.ev-when { display: flex; align-items: center; gap: 7px; font-size: 14.5px; color: var(--ink-2); margin-bottom: 3px; }
+.ev-blurb { font-size: 17px; line-height: 1.5; color: var(--ink-2); margin: 12px 0 14px; max-width: 46ch; }
+.ev-lead { display: inline-flex; align-items: center; gap: 9px; font-size: 14px; color: var(--ink-2); padding: 3px 12px 3px 3px; border-radius: 999px; transition: background 0.2s; }
+.ev-lead:hover { background: rgba(34, 28, 44, 0.05); }
+.ev-artists { display: flex; align-items: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.ev-art { width: 44px; height: 58px; border-radius: 2px; overflow: hidden; box-shadow: 0 0 0 3px #fbf6ec, 0 6px 14px -6px rgba(34, 28, 44, 0.4); transition: transform 0.25s var(--ease); }
+.ev-art:hover { transform: translateY(-4px) rotate(0deg) !important; }
+.ev-art svg { width: 100%; height: 100%; display: block; }
+.ev-art-k { font-size: 13px; color: var(--ink-3); margin-left: 4px; }
+
+.ev-ready { display: flex; flex-direction: column; }
+.ev-ring { position: relative; width: 116px; height: 116px; flex: none; }
+.ev-ring svg { position: absolute; inset: 0; }
+.ev-ring-v { position: absolute; inset: 0; display: grid; place-items: center; font-size: 30px; white-space: nowrap; }
+.ev-ring-v small { font-size: 16px; color: var(--ink-3); margin-left: 1px; }
+.ev-ready-k { font-size: 13.5px; color: var(--ink-3); margin: 8px 0 8px; }
+.ck { list-style: none; padding: 0; margin: 0; }
+.ck-item { width: 100%; display: grid; grid-template-columns: 22px 1fr auto; gap: 11px; align-items: center; padding: 8px 4px; text-align: left; border-bottom: 1px solid var(--line); font-size: 15px; transition: color 0.2s; }
+.ck-box { width: 22px; height: 22px; border-radius: 7px; border: 1.5px solid var(--line-2); display: grid; place-items: center; color: #fff; transition: background 0.2s, border-color 0.2s; }
+.ck-item:hover .ck-box { border-color: var(--k); }
+.ck-item.done .ck-box { background: var(--k); border-color: var(--k); }
+.ck-item.done .ck-label { color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--line-2); }
+.ck-who { font-size: 12.5px; color: var(--ink-3); }
+.ck-add { display: flex; gap: 8px; margin-top: 12px; }
+.ck-add .input { padding: 9px 12px; }
+
+.ev-numbers { display: flex; flex-direction: column; gap: 26px; }
+.ev-n-k { font-size: 13.5px; color: var(--ink-3); }
+.ev-n-v { font-size: 48px; line-height: 1.05; }
+.ev-n-sub { font-size: 13.5px; color: var(--ink-2); }
+.ev-bar { height: 8px; border-radius: 6px; background: rgba(34, 28, 44, 0.08); margin-top: 10px; overflow: hidden; }
+.ev-bar span { display: block; height: 100%; border-radius: 6px; background: var(--k); }
+.crowd { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px; max-width: 250px; }
+.crowd i { width: 9px; height: 12px; border-radius: 5px 5px 2px 2px; background: var(--k); opacity: 0.8; }
+.crowd i.extra { background: var(--marigold); opacity: 1; }
+.crowd i.empty { background: transparent; box-shadow: inset 0 0 0 1px var(--line-2); }
+.crowd-k { width: 100%; font-size: 12px; color: var(--ink-3); margin-top: 4px; }
+
+@media (max-width: 1180px) {
+  .ev { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .ev-numbers { grid-column: 1 / -1; flex-direction: row; }
+}
+@media (max-width: 820px) {
+  .garland-wrap { overflow-x: auto; margin: -4px -18px 0; padding: 0 18px; scrollbar-width: none; }
+  .garland-wrap::-webkit-scrollbar { display: none; }
+  .garland { width: 900px; max-height: none; }
+  .g-label { font-size: 13px; }
+
+  .sl { margin-top: 6px; }
+  .sl-k { font-size: 14px; color: var(--ink-3); margin: 18px 0 4px; }
+  .sl ul { list-style: none; margin: 0 -10px; padding: 0; }
+  .sl-row { width: 100%; display: flex; align-items: center; gap: 14px; padding: 11px 10px; border-radius: 16px; text-align: left; }
+  .sl-row:active { background: color-mix(in srgb, var(--k) 9%, transparent); }
+  .sl-date { width: 50px; height: 56px; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 4px 4px 14px 14px; color: #fffaf1; background: var(--k); box-shadow: 0 8px 16px -10px var(--k); line-height: 1; }
+  .sl-date b { font-size: 24px; font-weight: 500; }
+  .sl-date span { font-size: 12px; font-weight: 600; margin-top: 2px; opacity: 0.9; }
+  .sl-row.past .sl-date { background: transparent; color: var(--k); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--k) 45%, transparent); }
+  .sl-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .sl-name { font-family: var(--serif); font-size: 18.5px; line-height: 1.2; color: var(--ink); }
+  .sl-sub { font-size: 13px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sl-ring { flex: none; }
+
+  .ev { display: flex; flex-direction: column; gap: 30px; padding-top: 0; border-top: 0; }
+  .ev > section { overflow: visible; }
+  .ev-numbers { flex-direction: row; flex-wrap: wrap; gap: 26px 34px; }
+  .ev-numbers > * { flex: 1 1 140px; }
+  .ck-item { padding: 12px 4px; font-size: 15.5px; grid-template-columns: 26px 1fr auto; }
+  .ck-box { width: 26px; height: 26px; border-radius: 8px; }
+}

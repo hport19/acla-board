@@ -1,0 +1,96 @@
+@import '@fontsource-variable/fraunces/full.css';
+@import '@fontsource-variable/fraunces/full-italic.css';
+@import '@fontsource-variable/instrument-sans/index.css';
+
+:root {
+  --plaster: #f5eee2;
+  --plaster-2: #efe5d5;
+  --plaster-3: #e6d8c2;
+  --paper: #fbf7f0;
+  --ink: #221c2c;
+  --ink-2: #4b4153;
+  --ink-3: #7c7083;
+  --ink-4: #a89eab;
+  --line: rgba(34, 28, 44, 0.11);
+  --line-2: rgba(34, 28, 44, 0.2);
+
+  --night: #1f1a33;
+  --night-2: #2a2443;
+  --night-3: #3a3358;
+  --cream: #f6ead8;
+  --cream-2: rgba(246, 234, 216, 0.66);
+  --cream-3: rgba(246, 234, 216, 0.38);
+
+  --terracotta: #b9472a;
+  --marigold: #e39b1b;
+  --cempasuchil: #d9822b;
+  --teal: #1d5e5c;
+  --indigo: #3a3d8c;
+  --rosa: #c8366e;
+  --cobalt: #2f57a6;
+  --agave: #5e7f3f;
+  --gold: #b8860b;
+  --walnut: #6b4e3d;
+
+  --aye: #1d5e5c;
+  --nay: #b9472a;
+  --abstain: #a89eab;
+
+  --serif: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --sans: 'Instrument Sans Variable', 'Avenir Next', system-ui, sans-serif;
+
+  --r-window: 26px;
+  --r-stage: 20px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.55, 0, 0.75, 0.2);
+  --room: var(--cempasuchil);
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: #16122a;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+input, textarea, select { font: inherit; color: inherit; }
+a { color: inherit; }
+h1, h2, h3, h4, p { margin: 0; }
+
+:focus-visible { outline: 2px solid var(--room); outline-offset: 3px; border-radius: 6px; }
+
+.serif { font-family: var(--serif); font-optical-sizing: auto; }
+.num { font-variant-numeric: tabular-nums lining-nums; }
+
+.display {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-variation-settings: 'SOFT' 60, 'WONK' 1;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+.quiet { color: var(--ink-3); }
+.small { font-size: 13px; }
+
+::selection { background: color-mix(in srgb, var(--marigold) 40%, transparent); }
+
+/* thin, warm scrollbars inside the stage when a phone needs them */
+* { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
