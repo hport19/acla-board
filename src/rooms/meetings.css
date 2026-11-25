@@ -9,11 +9,11 @@
 .mt-ri { position: relative; width: 100%; display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 12px; text-align: left; }
 .mt-ri-on { position: absolute; inset: 0; border-radius: 12px; background: color-mix(in srgb, var(--teal) 11%, transparent); box-shadow: inset 3px 0 0 var(--teal); }
 .mt-ri-day { position: relative; font-size: 28px; width: 38px; text-align: center; color: var(--ink-2); }
-.mt-ri.planned .mt-ri-day, .mt-ri.live .mt-ri-day { color: var(--teal); }
+.mt-ri.st-planned .mt-ri-day, .mt-ri.st-live .mt-ri-day { color: var(--teal); }
 .mt-ri-text { position: relative; display: flex; flex-direction: column; line-height: 1.25; }
 .mt-ri-title { font-size: 15px; font-weight: 560; }
 .mt-ri-sub { font-size: 12.5px; color: var(--ink-3); }
-.mt-ri.live .mt-ri-sub { color: var(--terracotta); font-weight: 600; }
+.mt-ri.st-live .mt-ri-sub { color: var(--terracotta); font-weight: 600; }
 .mt-plan { display: flex; align-items: center; gap: 8px; padding: 8px 10px; margin-top: 4px; color: var(--teal); font-size: 14px; font-weight: 560; border-radius: 10px; }
 .mt-plan:hover { background: color-mix(in srgb, var(--teal) 8%, transparent); }
 
@@ -216,7 +216,7 @@
   .mt-rail-k { display: none; }
   .mt-ri { flex: none; width: auto; padding: 8px 16px 8px 8px; }
   .mt-ri:not(.on) { box-shadow: inset 0 0 0 1px var(--line); }
-  .mt-ri.held .mt-ri-day { color: var(--ink-3); }
+  .mt-ri.st-held .mt-ri-day { color: var(--ink-3); }
   .mt-plan { flex: none; margin: 0; padding: 8px 14px; }
 
   .pl-head { flex-direction: column; align-items: stretch; gap: 16px; }
@@ -251,9 +251,9 @@
   .window.immersive .stage { border-radius: 0; }
   .live-bar { gap: 10px; padding-bottom: 12px; white-space: nowrap; }
   .live-dot { flex: none; }
-  .live-bar .btn-ghost { padding: 0 12px; }
-  .live-bar .btn-ghost > span:not(.btn-icon) { display: none; }
-  .live-bar .btn-ghost .btn-icon { margin: 0; }
+  /* the way back to the agenda stays labelled and visible, even during the roll call */
+  .live-bar .btn-ghost { padding: 0 12px 0 10px; color: var(--cream); background: rgba(246, 234, 216, 0.1); }
+  .live-bar .live-k { display: none; }
   .live-name { display: none; }
   .live-bar .confirm-armed { position: absolute; right: 12px; top: calc(56px + env(safe-area-inset-top)); z-index: 5; padding: 8px 8px 8px 14px; border-radius: 999px; background: #22303a; box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.7); }
   .live-phone { display: flex; flex-direction: column; gap: 12px; padding: 12px 0 4px; }

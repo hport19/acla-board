@@ -1,8 +1,11 @@
 import { useSyncExternalStore } from 'react'
-import { createSeed } from './seed'
+import { createSeed as latinoSeed } from './seed'
+import { localSeed } from './seed-local'
 import type { State, Activity, RoomKey } from './types'
+import { BRAND, isLocal } from '../edition'
 
-const KEY = 'acla-board-os'
+const createSeed = () => (isLocal ? localSeed(latinoSeed()) : latinoSeed())
+const KEY = BRAND.storage
 const VERSION = 4
 
 function load(): State {

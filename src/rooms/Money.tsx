@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { isLocal } from '../edition'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useStore, update, uid } from '../store/store'
 import { money$ } from '../store/derive'
@@ -31,7 +32,8 @@ export default function Money() {
   )
 }
 
-/* The year-end campaign as a cántaro filling with marigold. */
+/* The year-end campaign as a cántaro filling with marigold (Latino edition) or a glass column filling with brass (Local edition). */
+const VESSEL = isLocal ? 'M58,40 V272 Q58,282 68,282 H172 Q182,282 182,272 V40Z' : 'M92,40 C92,58 70,62 52,92 C26,134 28,214 56,252 C78,282 162,282 184,252 C212,214 214,134 188,92 C170,62 148,58 148,40Z'
 function Campaign() {
   const c = useStore((s) => s.campaign)
   const gifts = useStore((s) => s.donations.filter((d) => d.campaign === c.name).sort((a, b) => b.date.localeCompare(a.date)))
@@ -46,11 +48,11 @@ function Campaign() {
       <div className="jar-wrap">
         <svg viewBox="0 0 240 300" className="jar" role="img" aria-label={`${money(raised)} raised of ${money(c.goal)}`}>
           <defs>
-            <clipPath id="jarInside"><path d="M92,40 C92,58 70,62 52,92 C26,134 28,214 56,252 C78,282 162,282 184,252 C212,214 214,134 188,92 C170,62 148,58 148,40Z" /></clipPath>
-            <linearGradient id="liquid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#f2c14e" /><stop offset="1" stopColor="#d9822b" /></linearGradient>
-            <linearGradient id="clay" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#9c4a2c" /><stop offset=".45" stopColor="#c56a42" /><stop offset="1" stopColor="#8a3d24" /></linearGradient>
+            <clipPath id="jarInside"><path d={VESSEL} /></clipPath>
+            <linearGradient id="liquid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={isLocal ? '#c9ae72' : '#f2c14e'} /><stop offset="1" stopColor={isLocal ? '#8f713c' : '#d9822b'} /></linearGradient>
+            <linearGradient id="clay" x1="0" y1="0" x2="1" y2="0">{isLocal ? <><stop offset="0" stopColor="#5d6878" /><stop offset=".45" stopColor="#9aa4b2" /><stop offset="1" stopColor="#4a5463" /></> : <><stop offset="0" stopColor="#9c4a2c" /><stop offset=".45" stopColor="#c56a42" /><stop offset="1" stopColor="#8a3d24" /></>}</linearGradient>
           </defs>
-          <path d="M92,40 C92,58 70,62 52,92 C26,134 28,214 56,252 C78,282 162,282 184,252 C212,214 214,134 188,92 C170,62 148,58 148,40Z" fill="url(#clay)" opacity=".18" />
+          <path d={VESSEL} fill="url(#clay)" opacity={isLocal ? 0.1 : 0.18} />
           <g clipPath="url(#jarInside)">
             <motion.g initial={{ y: bottom - top }} animate={{ y: level - top }} transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}>
               <motion.path d={`M-60,${top} q30,-10 60,0 t60,0 t60,0 t60,0 t60,0 t60,0 V320 H-60Z`} fill="url(#liquid)"
@@ -59,11 +61,20 @@ function Campaign() {
                 animate={{ x: [-60, 0] }} transition={{ duration: 4.5, repeat: Infinity, ease: 'linear' }} />
             </motion.g>
           </g>
-          <path d="M92,40 C92,58 70,62 52,92 C26,134 28,214 56,252 C78,282 162,282 184,252 C212,214 214,134 188,92 C170,62 148,58 148,40Z" fill="none" stroke="url(#clay)" strokeWidth="7" strokeLinejoin="round" />
-          <path d="M84,40 h72" stroke="#8a3d24" strokeWidth="9" strokeLinecap="round" />
-          <path d="M60,150 q60,16 120,0" stroke="#fff6e6" strokeOpacity=".55" strokeWidth="2.5" fill="none" strokeDasharray="4 6" />
-          <path d="M62,190 q58,14 116,0" stroke="#8a3d24" strokeOpacity=".4" strokeWidth="2" fill="none" />
-          <path d="M70,110 c-8,30 -10,70 0,110" stroke="#fff" strokeOpacity=".22" strokeWidth="8" fill="none" strokeLinecap="round" />
+          <path d={VESSEL} fill="none" stroke="url(#clay)" strokeWidth={isLocal ? 3 : 7} strokeLinejoin="round" />
+          {isLocal ? (
+            <>
+              <path d="M50,40 h140" stroke="#4a5463" strokeWidth="4" strokeLinecap="round" />
+              <path d="M72,62 v200" stroke="#fff" strokeOpacity=".3" strokeWidth="5" fill="none" strokeLinecap="round" />
+            </>
+          ) : (
+            <>
+              <path d="M84,40 h72" stroke="#8a3d24" strokeWidth="9" strokeLinecap="round" />
+              <path d="M60,150 q60,16 120,0" stroke="#fff6e6" strokeOpacity=".55" strokeWidth="2.5" fill="none" strokeDasharray="4 6" />
+              <path d="M62,190 q58,14 116,0" stroke="#8a3d24" strokeOpacity=".4" strokeWidth="2" fill="none" />
+              <path d="M70,110 c-8,30 -10,70 0,110" stroke="#fff" strokeOpacity=".22" strokeWidth="8" fill="none" strokeLinecap="round" />
+            </>
+          )}
           {[0.25, 0.5, 0.75].map((q) => <g key={q}><line x1="196" x2="206" y1={bottom - (bottom - top) * q} y2={bottom - (bottom - top) * q} stroke="rgba(34,28,44,.3)" /><text x="210" y={bottom - (bottom - top) * q + 4} className="jar-tick">{Math.round(q * 100)}%</text></g>)}
         </svg>
         <div className="jar-copy">

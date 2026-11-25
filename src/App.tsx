@@ -1,4 +1,5 @@
 import { useEffect, useState, type ComponentType } from 'react'
+import { isLocal } from './edition'
 import { AnimatePresence, motion } from 'framer-motion'
 import { navigate, useRoute, usePhone, relDay, day, money, buzz, daysFrom } from './lib'
 import { useStore, resetDemo, ME } from './store/store'
@@ -32,6 +33,7 @@ export const ROOMS: { key: RoomKey; label: string; color: string; C: ComponentTy
 ]
 
 export function Mark({ size = 34 }: { size?: number }) {
+  if (isLocal) return <Portico size={size} />
   // A cempasúchil bloom: layered petals cut like paper.
   const petals = 12
   return (
@@ -46,6 +48,22 @@ export function Mark({ size = 34 }: { size?: number }) {
         <circle r="7.5" fill="#b9472a" />
         <circle r="3" fill="#f6ead8" />
       </g>
+    </svg>
+  )
+}
+
+/* The Local Arts mark: a portico, the plain sign of a civic institution, in brass. */
+function Portico({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden className="mark">
+      <defs>
+        <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#d6bd84" /><stop offset=".55" stopColor="#b39554" /><stop offset="1" stopColor="#8a6d38" /></linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="30.5" fill="none" stroke="url(#brass)" strokeWidth="1.4" />
+      <path d="M15,26 L32,15 L49,26Z" fill="url(#brass)" />
+      <rect x="15" y="27.6" width="34" height="2.2" fill="url(#brass)" />
+      {[19.5, 27.2, 34.8, 42.5].map((x) => <rect key={x} x={x - 1.6} y="31.6" width="3.2" height="14" fill="url(#brass)" />)}
+      <rect x="14" y="47.4" width="36" height="2.4" fill="url(#brass)" />
     </svg>
   )
 }

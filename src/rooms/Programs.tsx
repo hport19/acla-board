@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { isLocal } from '../edition'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useStore, update, ME } from '../store/store'
 import { avgScore, dir } from '../store/derive'
@@ -114,7 +115,7 @@ function Loom({ applicants, sel, onSel }: { applicants: Applicant[]; sel: string
                 <svg viewBox="0 0 400 30" preserveAspectRatio="none" className="lr-svg" aria-hidden>
                   {[0, 1, 2, 3].map((k) => <line key={k} x1={50 + k * 100} x2={50 + k * 100} y1="0" y2="30" stroke="rgba(34,28,44,.09)" />)}
                   <motion.path d={`M0,15 ${Array.from({ length: 16 }).map((_, k) => `L${(k + 1) * ((50 + end * 100) / 16)},${15 + Math.sin(k * 1.3 + a.hue) * 2.5}`).join(' ')}`}
-                    stroke={declined ? 'var(--ink-4)' : `hsl(${a.hue} 55% 46%)`} strokeWidth="2.6" fill="none" strokeLinecap="round" vectorEffect="non-scaling-stroke"
+                    stroke={declined ? 'var(--ink-4)' : (isLocal ? `hsl(${a.hue} 22% 40%)` : `hsl(${a.hue} 55% 46%)`)} strokeWidth="2.6" fill="none" strokeLinecap="round" vectorEffect="non-scaling-stroke"
                     initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.9, delay: 0.15 + i * 0.05, ease: [0.22, 1, 0.36, 1] }} />
                 </svg>
                 <motion.span className="lr-knot" style={{ left: `${((50 + end * 100) / 400) * 100}%` }} layout transition={{ type: 'spring', stiffness: 200, damping: 22 }}>

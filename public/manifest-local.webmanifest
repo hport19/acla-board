@@ -1,0 +1,17 @@
+{
+  "name": "ACLA Board",
+  "short_name": "ACLA Board",
+  "description": "The working space of the Board of Directors of the Amarillo Council for the Local Arts.",
+  "id": "/local/",
+  "start_url": "/local/",
+  "scope": "/local/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1828",
+  "theme_color": "#0d1828",
+  "icons": [
+    { "src": "/local-icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/local-icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/local-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

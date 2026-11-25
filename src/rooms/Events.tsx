@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { isLocal } from '../edition'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useStore, update, uid, ME } from '../store/store'
 import { dir } from '../store/derive'
@@ -10,11 +11,11 @@ import { Button, Wash, toast, Count, RoomHead, Sheet, Field, Drawer } from '../u
 import type { ArtsEvent } from '../store/types'
 import './events.css'
 
-const KIND_COLOR: Record<ArtsEvent['kind'], string> = {
-  Festival: '#b9472a', Celebration: '#c8366e', Talk: '#2f57a6', Showcase: '#1d5e5c', Market: '#d18a12', Recital: '#7a4fa0', Workshop: '#5e7f3f',
-}
+const KIND_COLOR: Record<ArtsEvent['kind'], string> = isLocal
+  ? { Festival: '#7a3b2e', Celebration: '#6a2c40', Talk: '#3b5679', Showcase: '#2d5853', Market: '#94763e', Recital: '#4b3f63', Workshop: '#4b5f4d' }
+  : { Festival: '#b9472a', Celebration: '#c8366e', Talk: '#2f57a6', Showcase: '#1d5e5c', Market: '#d18a12', Recital: '#7a4fa0', Workshop: '#5e7f3f' }
 
-const shortName = (n: string) => n.split(':')[0].replace(/^(806\.art |Spring |Scholarship )/, '').replace(/ Festival$/, '').replace(/ de las Artes$/, '')
+const shortName = (n: string) => n.split(':')[0].replace(/^(806\.art |Spring |Scholarship |Winter |The )/, '').replace(/ (Festival|Lecture)$/, '').replace(/ de las Artes$/, '')
 
 export default function Events() {
   const { id } = useRoute()
@@ -92,7 +93,8 @@ function Garland({ events, current }: { events: ArtsEvent[]; current?: string })
   const W = phone ? 900 : 1200
   const H = 190
   const x = (iso: string) => ((new Date(iso).getTime() - from) / (to - from)) * W
-  const sag = (px: number) => 26 + Math.sin((px / W) * Math.PI) * 22
+  // The Latino edition hangs papel picado on a sagging string; the Local edition hangs banners from a straight rail.
+  const sag = (px: number) => (isLocal ? 34 : 26 + Math.sin((px / W) * Math.PI) * 22)
   const months: { x: number; label: string; year?: number }[] = []
   const m0 = new Date(from); m0.setDate(1); m0.setMonth(m0.getMonth() + 1)
   for (let d = new Date(m0); d.getTime() < to; d.setMonth(d.getMonth() + 1)) months.push({ x: x(d.toISOString()), label: d.toLocaleDateString('en-US', { month: 'short' }), year: d.getMonth() === 0 ? d.getFullYear() : undefined })
@@ -130,17 +132,28 @@ function Garland({ events, current }: { events: ArtsEvent[]; current?: string })
           const scallop = Array.from({ length: teeth }).map((_, k) => `L${w / 2 - (k + 0.5) * tw},${h + 5} L${w / 2 - (k + 1) * tw},${h}`).join(' ')
           return (
             <motion.g key={e.id} className={`flag ${on ? 'on' : ''} ${past ? 'past' : ''}`} style={{ cursor: 'pointer', transformOrigin: `${px}px ${top}px`, transformBox: 'view-box' }}
-              initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0, rotate: on ? [0, -4, 3, -1.5, 0] : 0 }}
+              initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0, rotate: on && !isLocal ? [0, -4, 3, -1.5, 0] : 0 }}
               transition={{ opacity: { delay: 0.2 + i * 0.05 }, y: { delay: 0.2 + i * 0.05, type: 'spring', stiffness: 180, damping: 14 }, rotate: { duration: 1.4 } }}
               onClick={() => openDetail(`/events/${e.id}`)} role="button" aria-label={`${e.name}, ${day(e.start)}`} tabIndex={0}
               onKeyDown={(ev) => { if (ev.key === 'Enter') openDetail(`/events/${e.id}`) }}>
               <line x1={px} x2={px} y1={top} y2={top + drop} stroke="rgba(34,28,44,.3)" />
               <g transform={`translate(${px} ${top + drop})`}>
-                <path d={`M${-w / 2},0 L${w / 2},0 L${w / 2},${h} ${scallop} Z`} fill={c} opacity={past && !on ? 0.5 : 1} />
-                <circle cx={0} cy={h * 0.38} r={w * 0.16} fill="var(--plaster)" />
-                <path d={`M0,${h * 0.62} l${w * 0.12},${w * 0.12} l${-w * 0.12},${w * 0.12} l${-w * 0.12},${-w * 0.12}Z`} fill="var(--plaster)" />
-                <circle cx={-w * 0.3} cy={h * 0.18} r={w * 0.06} fill="var(--plaster)" />
-                <circle cx={w * 0.3} cy={h * 0.18} r={w * 0.06} fill="var(--plaster)" />
+                {isLocal ? (
+                  <>
+                    <rect x={-w / 2} y={0} width={w} height={h + 4} fill={c} opacity={past && !on ? 0.45 : 1} />
+                    <rect x={-w / 2 + 3.5} y={3.5} width={w - 7} height={h - 3} fill="none" stroke="var(--plaster)" strokeOpacity=".45" strokeWidth=".8" />
+                    <line x1={-w * 0.18} x2={w * 0.18} y1={h * 0.62} y2={h * 0.62} stroke="var(--marigold)" strokeWidth="1.2" />
+                    <rect x={-w / 2 - 2} y={-1.5} width={w + 4} height={3} rx={1.5} fill="var(--ink-2)" />
+                  </>
+                ) : (
+                  <>
+                    <path d={`M${-w / 2},0 L${w / 2},0 L${w / 2},${h} ${scallop} Z`} fill={c} opacity={past && !on ? 0.5 : 1} />
+                    <circle cx={0} cy={h * 0.38} r={w * 0.16} fill="var(--plaster)" />
+                    <path d={`M0,${h * 0.62} l${w * 0.12},${w * 0.12} l${-w * 0.12},${w * 0.12} l${-w * 0.12},${-w * 0.12}Z`} fill="var(--plaster)" />
+                    <circle cx={-w * 0.3} cy={h * 0.18} r={w * 0.06} fill="var(--plaster)" />
+                    <circle cx={w * 0.3} cy={h * 0.18} r={w * 0.06} fill="var(--plaster)" />
+                  </>
+                )}
                 {on && <rect x={-w / 2 - 5} y={-5} width={w + 10} height={h + 15} rx={6} fill="none" stroke={c} strokeWidth="1.5" strokeDasharray="3 3" />}
                 <text y={h + 22} textAnchor="middle" className={`g-label ${on ? 'on' : ''}`}>{shortName(e.name)}</text>
                 <title>{`${e.name} · ${day(e.start, { month: 'long', day: 'numeric', year: 'numeric' })}`}</title>
@@ -282,7 +295,7 @@ function NewEvent({ open, onClose }: { open: boolean; onClose: () => void }) {
   }
   return (
     <Sheet open={open} onClose={onClose} title="A new event">
-      <Field label="Name"><input value={name} onChange={(e) => setName(e.target.value)} placeholder="Papel picado night for families" autoFocus /></Field>
+      <Field label="Name"><input value={name} onChange={(e) => setName(e.target.value)} placeholder={isLocal ? 'Open studio night for families' : 'Papel picado night for families'} autoFocus /></Field>
       <div className="field-row">
         <Field label="Date"><input type="date" value={date} onChange={(e) => setDate(e.target.value)} /></Field>
         <Field label="Kind"><select value={kind} onChange={(e) => setKind(e.target.value as ArtsEvent['kind'])}>{Object.keys(KIND_COLOR).map((k) => <option key={k}>{k}</option>)}</select></Field>
